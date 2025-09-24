@@ -1,0 +1,46 @@
+<script lang="ts">
+    import favicon from '$lib/assets/favicon.svg';
+    import "./../app.css"
+    import {Header} from "$components";
+    import {invalidate} from '$app/navigation'
+    import {onMount} from 'svelte'
+    import {setUserState} from "$lib/state/user-state.svelte";
+    import PickRating from "$components/PickRating.svelte";
+
+
+    let {data, children} = $props()
+    let {session, supabase} = $derived(data)
+
+    let userState = setUserState({session: data.session, supabase: data.supabase, user: data.user})
+
+
+    $effect(() => {
+        const {data} = supabase.auth.onAuthStateChange((_, newSession) => {
+
+            userState.updateState({session: newSession, supabase, user: newSession?.user || null})
+
+            if (newSession?.expires_at !== session?.expires_at) {
+                invalidate('supabase:auth')
+            }
+        })
+
+        return () => data.subscription.unsubscribe()
+    })
+
+
+    $inspect(session)
+    
+</script>
+
+<svelte:head>
+    <link rel="icon" href={favicon}/>
+</svelte:head>
+
+
+<Header/>
+
+{@render children?.()}
+
+<style>
+
+</style>
