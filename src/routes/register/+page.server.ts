@@ -8,7 +8,6 @@ interface ReturnObject {
     email: string;
     password: string;
     confirmPassword: string;
-
 }
 
 export const actions: Actions = {
@@ -40,7 +39,7 @@ export const actions: Actions = {
         if (email.length < 10) {
             returnObject.errors.push("Email address is too short.")
         }
-        if (!email.includes("@") || !email.includes(".") || (!email.includes("com") || !email.includes("no") || !email.includes("net"))) {
+        if (!email.includes("@") || !email.includes(".") || (!email.endsWith("com") || !email.endsWith("no") || !email.endsWith("net"))) {
             returnObject.errors.push("Email address needs to have an '@' and '.' and end on 'com', 'no' or 'net'")
         }
 
