@@ -40,8 +40,8 @@ export const actions: Actions = {
         if (email.length < 10) {
             returnObject.errors.push("Email address is too short.")
         }
-        if (!email.includes("@") || !email.includes(".")) {
-            returnObject.errors.push("Email address needs to have an '@' and '.'")
+        if (!email.includes("@") || !email.includes(".") || (!email.includes("com") || !email.includes("no") || !email.includes("net"))) {
+            returnObject.errors.push("Email address needs to have an '@' and '.' and end on 'com', 'no' or 'net'")
         }
 
         if (returnObject.errors.length) {
